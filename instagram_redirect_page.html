@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagramへ移動中...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .instagram-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            font-weight: 300;
+        }
+
+        .loading-text {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .loading-dots {
+            display: inline-block;
+            width: 20px;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 32px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f09433, #e6683c, #dc2743);
+            border-radius: 2px;
+            animation: progress 3s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 20px;
+            line-height: 1.4;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <div class="instagram-logo">📷</div>
+        <h1>Instagramアプリを開いています</h1>
+        <p class="loading-text">お待ちください<span class="loading-dots"></span></p>
+        
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <a href="https://instagram.com/minatoo0317" class="cta-button">
+            アプリが開かない場合はこちら
+        </a>
+
+        <p class="subtitle">
+            TikTokからInstagramに移動します<br>
+            数秒後に自動で開きます
+        </p>
+    </div>
+
+    <script>
+        const ig = 'minatoo0317';          /* ←★ユーザー名を入れてください */
+        const ua = navigator.userAgent || '';
+        const isTikTok = /TikTok/i.test(ua);
+        const isIOS = /iPhone|iPad|iPod/i.test(ua);
+        const goIOS = `x-safari-https://instagram.com/_u/${ig}`;
+        const deepIOS = `instagram://user?username=${ig}`;
+        const goAndr = `intent://instagram.com/${ig}/#Intent;scheme=https;package=com.android.chrome;end`;
+        const deepAndr = `intent://www.instagram.com/${ig}/#Intent;scheme=https;package=com.instagram.android;end`;
+
+        window.addEventListener('load', () => {
+            /* TikTok 内ブラウザだけ処理 */
+            if (!isTikTok) return;
+            
+            setTimeout(() => {
+                if (isIOS) {           // ① まずアプリ直接
+                    location.href = deepIOS;
+                    /* 0.8 秒後 Safari スキームへフェイルオーバー */
+                    setTimeout(() => location.href = goIOS, 800);
+                } else {               // ② Android
+                    location.href = deepAndr;
+                    setTimeout(() => location.href = goAndr, 800);
+                }
+            }, 300);               // 描画安定の 0.3 秒待機
+        });
+
+        // 手動ボタンクリック時の処理
+        document.querySelector('.cta-button').addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // まずアプリを試す
+            const appUrl = isIOS ? deepIOS : deepAndr;
+            const webUrl = `https://instagram.com/${ig}`;
+            
+            // アプリURLを試す
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = appUrl;
+            document.body.appendChild(iframe);
+            
+            // 1秒後にWebページにフォールバック
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+                window.open(webUrl, '_blank');
+            }, 1000);
+        });
+
+        // デバッグ情報の表示
+        console.log('User Agent:', ua);
+        console.log('Is TikTok:', isTikTok);
+        console.log('Is iOS:', isIOS);
+        console.log('Deep Link iOS:', deepIOS);
+        console.log('Deep Link Android:', deepAndr);
+    </script>
+</body>
+</html>
